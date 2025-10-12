@@ -113,29 +113,43 @@ export default function Guest() {
 
   // ✅ joining logic
   const handleJoin = () => {
-    if (code.trim().length !== 4) {
-      setMessage("Enter a valid 4-digit code");
-      return;
-    }
-    console.log("🔔 Requesting to join room:", code);
-    socket.emit("joinRequest", code);
-    setWaiting(true);
-    setMessage("Waiting for host approval...");
-  };
+  if (code.trim().length !== 4) {
+    setMessage("Enter a valid 4-digit code");
+    return;
+  }
+  
+  // 🆕 Clear old room messages if switching rooms
+  const savedCode = localStorage.getItem("guest_chat_code");
+  if (savedCode && savedCode !== code) {
+    console.log("🔄 Switching rooms, clearing old messages");
+    socket.emit("leaveRoom", savedCode);
+    localStorage.removeItem(`guest_chat_${savedCode}`);
+    setMessages([]);
+  }
+  
+  console.log("🔔 Requesting to join room:", code);
+  socket.emit("joinRequest", code);
+  setWaiting(true);
+  setMessage("Waiting for host approval...");
+};
 
   // ✅ when approved by host
   useEffect(() => {
     socket.on("joinSuccess", (approvedCode) => {
-      console.log("✅ Join approved for room:", approvedCode);
-      setConnected(true);
-      setWaiting(false);
-      setShowDeleteButton(true);
-      
+  console.log("✅ Join approved for room:", approvedCode);
+  
+  // 🆕 Clear messages when joining a new room
+  setMessages([]);
+  
+  setConnected(true);
+  setWaiting(false);
+  setShowDeleteButton(true);
+  setMessage(`✅ Connected to room ${approvedCode}`);
 
-      localStorage.setItem("guest_chat_code", approvedCode);
+  localStorage.setItem("guest_chat_code", approvedCode);
 
-      socket.emit("joinRoom", approvedCode);
-    });
+  socket.emit("joinRoom", approvedCode);
+});
 
     socket.on("joinDenied", () => {
       console.log("❌ Join denied by host");
