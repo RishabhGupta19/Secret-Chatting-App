@@ -6,7 +6,7 @@ import { Server } from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
+const io = new Server(server, { cors: { origin: "https://secret-chatting-app.vercel.app/createchat" } });
 
 // rooms: map code -> { hostId: string, guests: Set<string>, hostTimeout?: NodeJS.Timeout }
 const rooms = {};
