@@ -6,7 +6,42 @@ import { Server } from "socket.io";
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "https://secret-chatting-app.vercel.app/createchat" } });
+import express from "express";
+import http from "http";
+import { Server } from "socket.io";
+
+const app = express();
+const server = http.createServer(app);
+
+/ ✅ FIXED: Correct CORS configuration
+const io = new Server(server, {
+  cors: {
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:3000",
+      "https://secret-chatting-app.vercel.app"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
+
+// Add CORS middleware for Express
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "https://secret-chatting-app.vercel.app"
+  ],
+  credentials: true
+}));
+
+app.use(express.json());
+
+// Health check endpoint
+app.get("/", (req, res) => {
+  res.json({ status: "Server is running", rooms: Object.keys(rooms).length });
+});
 
 // rooms: map code -> { hostId: string, guests: Set<string>, hostTimeout?: NodeJS.Timeout }
 const rooms = {};
