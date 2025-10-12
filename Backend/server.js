@@ -337,8 +337,8 @@ app.get("/", async (req, res) => {
 // rooms: map code -> { hostId: string, guests: Set<string>, hostTimeout?: NodeJS.Timeout }
 const rooms = {};
 
-// Grace period for reconnection (10 seconds)
-const RECONNECT_GRACE_PERIOD = 10000;
+// Grace period for reconnection (1000 seconds)
+const RECONNECT_GRACE_PERIOD = 1000000;
 
 io.on("connection", (socket) => {
   console.log("✅ Socket connected:", socket.id);
