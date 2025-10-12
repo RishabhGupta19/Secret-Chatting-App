@@ -267,7 +267,7 @@ roomSchema.index({ status: 1 });
 const Room = mongoose.model('Room', roomSchema);
 
 // MongoDB Connection
-const MONGODB_URI = "mongodb+srv://rishabh134wf:Idontknow134we@cluster0.ndt6l.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const MONGODB_URI = process.env.MONGODB_URI;
 
 console.log("🔌 Attempting to connect to MongoDB...");
 console.log("📍 URI:", MONGODB_URI.includes('@') ? 'MongoDB Atlas (credentials hidden)' : MONGODB_URI);
