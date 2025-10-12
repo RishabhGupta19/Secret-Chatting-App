@@ -1,0 +1,797 @@
+/* ========================================
+    RESET & BASE STYLES
+    ======================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  /* Smooth transitions for all interactive elements */
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-osx-font-smoothing: grayscale;
+  background: linear-gradient(135deg, #0f0f1e 0%, #1a1a2e 100%);
+  min-height: 100vh;
+  display: flex;
+  /* CHANGE 3: Center elements vertically, but start higher up for the title */
+  align-items: flex-start; 
+  justify-content: center;
+  padding: 40px 20px 20px 20px; /* Added top padding for website title space */
+  color: #e4e4e7;
+}
+
+#root {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  /* CHANGE 3: Ensure #root doesn't take up full viewport height on desktop */
+  min-height: auto; 
+}
+
+/* ========================================
+    CHAT CONTAINER
+    ======================================== */
+.chat-container {
+  /* Enforce flex column structure for header, chat-box, input-area */
+  display: flex; 
+  flex-direction: column;
+  
+  background: rgba(30, 30, 46, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  animation: slideIn 0.3s ease-out;
+  /* CHANGE 3: Set a slightly smaller max-height for the container on desktop */
+  max-height: 85vh; 
+  height: auto;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+    CHAT HEADER
+    ======================================== */
+.chat-header {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  padding: 20px 24px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  letter-spacing: 0.3px;
+  flex-shrink: 0; /* Prevents shrinking */
+}
+
+.chat-header span {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* ========================================
+    CHAT BOX (MESSAGES AREA)
+    ======================================== */
+.chat-box {
+  height: 400px; /* Fixed height for desktop */
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 24px;
+  background: rgba(24, 24, 37, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+  flex: 1; /* Allows it to expand vertically on mobile */
+  min-height: 300px;
+}
+
+/* Custom Scrollbar */
+.chat-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chat-box::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
+}
+
+.chat-box::-webkit-scrollbar-thumb {
+  background: rgba(99, 102, 241, 0.4);
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.chat-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(99, 102, 241, 0.6);
+}
+
+/* Message Styles */
+.chat-box p {
+  padding: 12px 16px;
+  border-radius: 12px;
+  max-width: 80%;
+  word-wrap: break-word;
+  line-height: 1.5;
+  font-size: 15px;
+  animation: messageIn 0.2s ease-out;
+}
+
+@keyframes messageIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Host/You Messages (Right) */
+.text-right {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: #ffffff;
+  margin-left: auto;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+/* Guest Messages (Left) */
+.text-left {
+  align-self: flex-start;
+  background: rgba(71, 85, 105, 0.5);
+  color: #e4e4e7;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* System Messages (Center) */
+.text-center {
+  align-self: center;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 13px;
+  padding: 8px 12px;
+  max-width: 100%;
+  text-align: center;
+}
+
+.text-center.italic {
+  font-style: italic;
+}
+
+.chat-box strong {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+/* Empty State */
+.text-gray-400 {
+  color: #94a3b8;
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+/* ========================================
+    INPUT AREA
+    ======================================== */
+.input-area {
+  display: flex;
+  gap: 12px;
+  padding: 20px 24px;
+  background: rgba(30, 30, 46, 0.8);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  flex-shrink: 0; /* Prevents shrinking */
+}
+
+.input-area input,
+.input-box {
+  /* CHANGE 1: Reduced flex growth to make the input box a bit smaller */
+  flex: 0.75; 
+  padding: 14px 18px;
+  background: rgba(51, 51, 71, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #e4e4e7;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-area button {
+    /* Set button flex to ensure it has space */
+    flex-shrink: 0;
+    flex-grow: 0.25; /* Let the button grow slightly if needed, but primarily use padding */
+}
+
+.input-area input:focus,
+.input-box:focus {
+  background: rgba(51, 51, 71, 0.8);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.input-area input::placeholder,
+.input-box::placeholder {
+  color: #64748b;
+}
+
+/* Remove number input arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield; /* Firefox fallback */
+}
+
+/* ========================================
+    BUTTONS
+    ======================================== */
+button {
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  letter-spacing: 0.3px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+/* FIX: Centering and proper desktop/mobile sizing for the button container */
+.spaced-button {
+  margin: 16px auto; /* Center the button container on desktop */
+  width: 100%;
+  max-width: 600px;
+  display: block; /* Ensure it respects margin auto */
+  text-align: center; /* Center content if needed */
+}
+
+/* NEW: Guest/Join screen button container */
+/* Guest.jsx uses 'spaced-button' for 'Join Room' (in the unconnected state) */
+/* Host.jsx uses 'spaced-button' for 'Create Chat' and 'Disconnect' */
+
+/* This style applies to the button inside the Host/Guest button container */
+.spaced-button > button {
+    display: inline-block;
+    width: 100%;
+    max-width: 300px; /* Limit button width inside container for aesthetics */
+}
+
+/* --- Host.jsx uses the general spaced-button for Create/Disconnect --- */
+
+/* --- Guest.jsx Specific Styles (Join Screen) --- */
+
+.chat-container .enter {
+  color: #cbd5e1;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 16px;
+  padding: 0 24px;
+}
+
+/* Since Host.jsx's Disconnect button is already styled red, 
+   we just need to style the specific button className you added for Guest.jsx (Button1) if needed, 
+   but it should inherit the default purple. I'll rely on the existing .spaced-button for the Disconnect button.
+*/
+
+/* --- Disconnect Button Overrides (for both Host/Guest) --- */
+/* The Host.jsx Disconnect button uses the spaced-button class. 
+   The Guest.jsx Disconnect button uses the spaced-button1 class. 
+   I will merge them under a common set of styles for consistency.
+*/
+
+.spaced-button > button,
+.spaced-button1 { /* Targeting the button elements directly in their containers */
+    /* Force red background override */
+    background: #dc2626 !important; 
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.spaced-button > button:hover,
+.spaced-button1:hover {
+    /* Force darker red on hover override */
+    background: #b91c1c !important; 
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.5);
+}
+
+
+/* ========================================
+    MODAL OVERLAY (DISCONNECT CONFIRMATION)
+    ======================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  background: rgba(30, 30, 46, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 28px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: modalSlideIn 0.3s ease-out;
+  text-align: center;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-content h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.modal-content p {
+  font-size: 15px;
+  color: #94a3b8;
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.modal-buttons button {
+  flex: 1;
+  max-width: 150px;
+  padding: 12px 20px;
+  font-size: 15px;
+}
+
+/* ========================================
+    JOIN ALERT (HOST) - Keep Original Style
+    ======================================== */
+.bg-gray-800 {
+  background: #1f2937;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.bg-gray-800 p {
+  margin-bottom: 8px;
+  color: #e4e4e7;
+}
+
+.flex {
+  display: flex;
+}
+
+.gap-4 {
+  gap: 16px;
+}
+
+.bg-green-600 {
+  background: #059669;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.bg-green-600:hover {
+  background: #047857;
+}
+
+.bg-red-600 {
+  background: #dc2626;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.bg-red-600:hover {
+  background: #b91c1c;
+}
+
+.px-3 {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.py-1 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.rounded {
+  border-radius: 6px;
+}
+
+.mb-2 {
+  margin-bottom: 8px;
+}
+
+/* ========================================
+    STATUS INDICATORS
+    ======================================== */
+.text-yellow-400 {
+  color: #fbbf24;
+}
+
+.text-red-400 {
+  color: #f87171;
+}
+
+.text-sm {
+  font-size: 13px;
+}
+
+.ml-2 {
+  margin-left: 8px;
+}
+
+.mt-3 {
+  margin-top: 16px;
+}
+
+/* ========================================
+    RESPONSIVE DESIGN (Mobile First Overrides)
+    ======================================== */
+@media (max-width: 640px) {
+  body {
+    padding: 0;
+    align-items: stretch; /* Stretch to fill the whole screen */
+    justify-content: flex-start;
+  }
+
+  #root {
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Remove gap in fullscreen mode */
+  }
+
+  .chat-container {
+    border-radius: 0; /* Full-screen look */
+    max-width: 100%;
+    min-height: 100vh;
+    height: 100vh; /* Use 100vh for full height on mobile */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .chat-header {
+    padding: 18px 20px;
+    font-size: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .chat-header span {
+    font-size: 13px;
+    padding: 4px 10px;
+  }
+
+  .chat-box {
+    height: auto;
+    flex: 1; /* Crucial: Takes up all available vertical space */
+    min-height: 0; /* Ensures flex works correctly */
+    max-height: none;
+    padding: 16px;
+    gap: 10px;
+    overflow-y: auto;
+  }
+
+  .chat-box p {
+    padding: 10px 14px;
+    font-size: 14px;
+    max-width: 85%;
+  }
+
+  .input-area {
+    padding: 16px;
+    gap: 10px;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+
+  .input-area input {
+    /* CHANGE 1: Reduced flex growth on mobile too */
+    flex: 0.75; 
+    padding: 12px 16px;
+    font-size: 15px;
+    min-width: 0;
+  }
+  
+  .input-area button {
+    /* Set button flex to ensure it has space */
+    flex-shrink: 0;
+    flex-grow: 0.25; 
+    padding: 12px 24px;
+    font-size: 15px;
+    white-space: nowrap;
+  }
+
+
+  .input-box {
+    padding: 12px 16px;
+    font-size: 15px;
+    width: 100%;
+  }
+
+  button {
+    padding: 13px 20px;
+    font-size: 15px;
+  }
+
+  /* Responsive fixes for spaced-button */
+  .spaced-button {
+    margin: 0; /* Remove top margin and use full width */
+    padding: 0 16px 16px 16px; /* Add bottom padding outside the chat container if needed */
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  .spaced-button > button {
+    max-width: none;
+    width: 100%; /* Make the button full width on mobile */
+    margin-top: 16px;
+    border-radius: 12px;
+  }
+
+  /* Guest.jsx uses spaced-button1 for Disconnect */
+  .spaced-button1 {
+    max-width: none;
+    width: 100%; 
+    margin: 16px 16px 16px 16px;
+    border-radius: 12px;
+  }
+
+
+  .bg-gray-800 {
+    padding: 16px;
+    margin-top: 0;
+    border-radius: 0;
+  }
+
+  .flex {
+    flex-direction: column;
+  }
+
+  .gap-4 {
+    gap: 12px;
+  }
+
+  /* Modal responsive */
+  .modal-content {
+    width: 85%;
+    padding: 24px 20px;
+    margin: 0 16px;
+  }
+
+  .modal-content h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .modal-content p {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  .modal-buttons {
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .modal-buttons button {
+    padding: 12px 16px;
+    font-size: 14px;
+  }
+
+  /* Guest Join Screen - Full Screen (Assuming these selectors apply to elements outside chat-container children) */
+  .chat-container > h2 {
+    padding: 18px 20px;
+    margin: 0;
+    flex-shrink: 0;
+    font-size: 16px;
+  }
+
+  .chat-container > input[type="number"] {
+    margin: 0 20px 16px 20px;
+    width: calc(100% - 40px);
+  }
+
+  .chat-container > button {
+    margin: 0 20px 16px 20px;
+    width: calc(100% - 40px);
+  }
+
+  .chat-container > p {
+    margin: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 400px) {
+  .chat-header {
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+
+  .chat-box {
+    padding: 14px;
+  }
+
+  .chat-box p {
+    max-width: 88%;
+    padding: 9px 13px;
+    font-size: 14px;
+  }
+
+  .input-area {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .input-area input {
+    padding: 11px 14px;
+    font-size: 14px;
+  }
+
+  .input-area button {
+    padding: 11px 20px;
+    font-size: 14px;
+  }
+
+  .input-box {
+    padding: 11px 14px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 12px 18px;
+    font-size: 14px;
+  }
+
+  .modal-content {
+    width: 88%;
+    padding: 22px 18px;
+  }
+
+  .modal-content h3 {
+    font-size: 17px;
+  }
+
+  .modal-content p {
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+
+  .modal-buttons button {
+    padding: 11px 16px;
+    font-size: 14px;
+  }
+
+  /* Guest Join Screen - Full Screen (Assuming these selectors apply to elements outside chat-container children) */
+  .chat-container > h2 {
+    padding: 16px 18px;
+    font-size: 15px;
+  }
+
+  .chat-container > input[type="number"],
+  .chat-container > button {
+    margin: 0 18px 14px 18px;
+    width: calc(100% - 36px);
+  }
+
+  .chat-container > p {
+    margin: 10px 18px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 360px) {
+  .chat-header {
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+
+  .modal-content {
+    width: 90%;
+    padding: 20px 16px;
+  }
+
+  .modal-content h3 {
+    font-size: 16px;
+  }
+
+  .modal-content p {
+    font-size: 13px;
+  }
+}
+
+/* ========================================
+    UTILITIES
+    ======================================== */
+.text-center {
+  text-align: center;
+}
+
+.italic {
+  font-style: italic;
+}
