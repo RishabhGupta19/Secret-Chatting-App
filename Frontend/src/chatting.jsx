@@ -5,7 +5,7 @@
 import { io } from "socket.io-client";
 import { useState, useEffect, useRef } from "react";
 import "./Host.css";
-import Delete from "./Delete.jsx";
+import Delete from "./delete.jsx";
 
 const socket = io("https://secret-chatting-app.onrender.com");
 
