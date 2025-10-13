@@ -22,7 +22,6 @@ The messages are **instant**, **private**, and persist locally until the user ma
 
 ### **Frontend**
 - ⚛️ React (Vite)
-- 🎨 Tailwind CSS
 - 🔌 Socket.IO Client
 
 ### **Backend**
