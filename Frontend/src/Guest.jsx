@@ -144,7 +144,7 @@ export default function Guest() {
   setConnected(true);
   setWaiting(false);
   setShowDeleteButton(true);
-  setMessage(`✅ Connected to room ${approvedCode}`);
+//  setMessage(`✅ Connected to room ${approvedCode}`);
 
   localStorage.setItem("guest_chat_code", approvedCode);
 
