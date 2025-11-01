@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { io } from "socket.io-client";
-const socket = io("http://43.204.112.122:5000");
+const socket = io("https://secret-chatting-app.onrender.com");
 
 function JoinRoom({ onJoinSuccess }) {
   const [code, setCode] = useState("");
