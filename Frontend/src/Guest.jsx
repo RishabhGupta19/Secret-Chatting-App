@@ -6,7 +6,7 @@ import { useState, useEffect, useRef } from "react";
 import "./Guest.css";
 import Delete from "./delete.jsx";
 
-const socket = io("https://secret-chatting-app.onrender.com");
+const socket = io("http://43.204.112.122:5000");
 
 export default function Guest() {
   const [code, setCode] = useState("");
