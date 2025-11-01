@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from "react";
 import "./Host.css";
 import Delete from "./delete.jsx";
 
-const socket = io("http://43.204.112.122:5000");
+const socket = io("https://secret-chatting-app.onrender.com");
 
 export default function Host() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
